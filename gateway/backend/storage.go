@@ -64,6 +64,7 @@ func createEntry(username string, content string) int {
 		// we must create the directory which will contain the file
 		_ = os.Mkdir(storageRoot+"/"+string(username[0]), os.ModePerm)
 	}
+	base.Zlog.Infof("Saving the data for user: %s", username)
 	_ = ioutil.WriteFile(storageRoot+"/"+string(username[0])+"/"+username, []byte(content), os.ModePerm)
 	return 1
 }

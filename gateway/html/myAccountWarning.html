@@ -9,13 +9,14 @@
 		<input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
 		<label class="custom-control-label" for="customSwitch1">Delete my whole datas</label>
 	</div>
-	<label class="col-form-label" for="MyPasswordDelete">Password</label>
-	<span contenteditable="true" class="form-control" id="MyPasswordDelete" 
-		style="padding:.0rem 0.75rem;display:inline;border:0px; border-bottom:2px solid;background-color:#ffffff; white-space:pre-line;" aria-describedby="PasswordHelp">
-	</span>
 	<small id="PasswordHelp" class="form-text text-muted">
 		Please type in your password for deletion
 	</small>
+	<span contenteditable="true" class="form-control"  
+		style="padding:.0rem 0.75rem;display:inline;border:0px; border-bottom:0px solid;background-color:#ffffff; white-space:pre-line;" aria-describedby="PasswordHelp">
+	</span>
+	<label class="col-form-label" for="MyPasswordDelete">Password</label>
+        <input type="password" id="MyPasswordDelete" class="form-control" placeholder="password">
 	<button type="button" class="btn btn-danger pull-right" id="btnConfirmDelete">
 		Confirm account deletion
 	</button>
