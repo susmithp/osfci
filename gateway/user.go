@@ -329,10 +329,13 @@ func deleteUser(username string, w http.ResponseWriter, r *http.Request) bool {
 	var newData accountDelete
 	var getJSON = base.HTTPGetBody(r)
 	_ = json.Unmarshal(getJSON, &newData)
+	base.Zlog.Infof("Deleteing the user: %s", username)
+	base.Zlog.Infof(newData)
 	if newData.DeleteData == "true" {
 	} else {
 	}
 	updatedData = userGetInternalInfo(username)
+	base.Zlog.Infof(updatedData)
 	// if the received password is not the one of the end user we can't erase it's account
 	// might be a browser hack
 	if !base.CheckPasswordHash(newData.CurrentPassword, updatedData.Password) {
@@ -341,7 +344,6 @@ func deleteUser(username string, w http.ResponseWriter, r *http.Request) bool {
 	}
 
 	base.Zlog.Infof("Deleteing the user: %s", updatedData.Nickname)
-	return true
 	// Just need to disable the account by unactivating it
 	// It could be recovered by resetting the password
 	updatedData.Active = 0
