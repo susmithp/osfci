@@ -64,6 +64,7 @@ func createEntry(username string, content string) int {
 		// we must create the directory which will contain the file
 		_ = os.Mkdir(storageRoot+"/"+string(username[0]), os.ModePerm)
 	}
+	base.Zlog.Infof("Saving the data for user: %s", username)
 	_ = ioutil.WriteFile(storageRoot+"/"+string(username[0])+"/"+username, []byte(content), os.ModePerm)
 	return 1
 }
@@ -137,6 +138,7 @@ func getOpenBMCBuildLog(username string, w http.ResponseWriter, recipe string) {
 
 func getImage(username string) string {
 	_, err := os.Stat(storageRoot + "/" + string(username[0]))
+	base.Zlog.Infof("Get the image: %s: %s", err, username)
 	file.Lock()
 	defer file.Unlock()
 	if os.IsNotExist(err) {
@@ -146,12 +148,14 @@ func getImage(username string) string {
 	}
 
 	_, err = os.Stat(storageRoot + "/" + string(username[0]) + "/" + username + ".jpg")
+	base.Zlog.Infof("Image: %s", err)
 	if os.IsNotExist(err) {
 		var staticAssetsDir = viper.GetString("STATIC_ASSETS_DIR")
 		content, _ := ioutil.ReadFile(staticAssetsDir + "images/forklift.png")
 		encodedContent := base64.StdEncoding.EncodeToString(content)
 		return encodedContent
 	}
+	base.Zlog.Infof("storageRoot: %s:", storageRoot)
 	content, _ := ioutil.ReadFile(storageRoot + "/" + string(username[0]) + "/" + username + ".jpg")
 	encodedContent := base64.StdEncoding.EncodeToString(content)
 	return encodedContent
@@ -159,13 +163,19 @@ func getImage(username string) string {
 
 func deleteEntry(username string, content string) int {
 	_, err := os.Stat(storageRoot + "/" + string(username[0]) + "/" + username)
+	base.Zlog.Infof("Delete: %s: %s", err, username)
 	file.Lock()
 	defer file.Unlock()
+	base.Zlog.Infof("Checking if the file exists")
 	if !os.IsNotExist(err) {
+		base.Zlog.Infof("deleting user file")
+		return 1
 		_ = os.Remove(storageRoot + "/" + string(username[0]) + "/" + username)
 	}
 	_, err = os.Stat(storageRoot + "/" + string(username[0]) + "/" + username + ".jpg")
 	if !os.IsNotExist(err) {
+		base.Zlog.Infof("deleting user image")
+		return 1
 		_ = os.Remove(storageRoot + "/" + string(username[0]) + "/" + username + ".jpg")
 	}
 	return 1
@@ -264,6 +274,7 @@ func userCallback(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 				} else {
+					base.Zlog.Infof("For Delete: : %s", username)
 					createEntry(username, string(base.HTTPGetBody(r)))
 				}
 			}
@@ -271,7 +282,9 @@ func userCallback(w http.ResponseWriter, r *http.Request) {
 			createImage(username, string(base.HTTPGetBody(r)))
 		}
 	case http.MethodDelete:
+		base.Zlog.Infof("Deleting the user: %s", username)
 		deleteEntry(username, string(base.HTTPGetBody(r)))
+		base.Zlog.Infof("Deleted the user: %s", username)
 	default:
 	}
 }
