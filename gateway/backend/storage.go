@@ -224,6 +224,8 @@ func userCallback(w http.ResponseWriter, r *http.Request) {
 	username = path[2]
 	var command string
 	var recipe string
+	base.Zlog.Infof("path: %s", r.URL.Path)
+	base.Zlog.Infof("path 3: %s", path[3])
 	if len(path) > 3 {
 		command = path[3]
 		recipe = path[4]
