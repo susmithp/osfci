@@ -228,6 +228,8 @@ func userCallback(w http.ResponseWriter, r *http.Request) {
 	if len(path) > 3 {
 	        base.Zlog.Infof("path 3: %s", path[3])
 		command = path[3]
+	}
+	if len(path) > 4 {
 		recipe = path[4]
 	}
 	switch r.Method {
