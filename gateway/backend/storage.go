@@ -181,6 +181,12 @@ func deleteEntry(username string, content string) int {
 	return 1
 }
 
+func deleteUserData(username string, content string) int {
+	base.Zlog.Infof("Delete: User data: %s", username)
+	return 1
+}
+
+
 func distrosCallback(w http.ResponseWriter, r *http.Request) {
 	// We must breakdown the words, because directory filename is the last word
 	path := strings.Split(r.URL.Path, "/")
@@ -286,9 +292,15 @@ func userCallback(w http.ResponseWriter, r *http.Request) {
 			createImage(username, string(base.HTTPGetBody(r)))
 		}
 	case http.MethodDelete:
-		base.Zlog.Infof("Deleting the user: %s", username)
-		deleteEntry(username, string(base.HTTPGetBody(r)))
-		base.Zlog.Infof("Deleted the user: %s", username)
+		switch command {
+			case "delete_user_data":
+				base.Zlog.Infof("Deleting the data of user: %s", username)
+				deleteUserData(username, string(base.HTTPGetBody(r)))
+			default:
+				base.Zlog.Infof("Deleting the user: %s", username)
+				deleteEntry(username, string(base.HTTPGetBody(r)))
+				base.Zlog.Infof("Deleted the user: %s", username)
+		}
 	default:
 	}
 }

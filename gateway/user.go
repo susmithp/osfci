@@ -343,13 +343,16 @@ func deleteUser(username string, w http.ResponseWriter, r *http.Request) bool {
 		return false
 	}
 
-	base.Zlog.Infof("Deleteing the user: %s", updatedData.Nickname)
+	base.Zlog.Infof("Confirm Deleteing the user: %s", updatedData.Nickname)
 	// Just need to disable the account by unactivating it
 	// It could be recovered by resetting the password
 	updatedData.Active = 0
 	c, _ := json.Marshal(updatedData)
-	base.HTTPPutRequest("http://"+StorageURI+StorageTCPPORT+"/user/"+updatedData.Nickname, c, "application/json")
-
+	//base.HTTPPutRequest("http://"+StorageURI+StorageTCPPORT+"/user/"+updatedData.Nickname, c, "application/json")
+	base.HTTPDeleteRequest("http://"+StorageURI+StorageTCPPORT+"/user/"+updatedData.Nickname)
+	if newData.DeleteData == "true" {
+		base.HTTPDeleteRequest("http://"+StorageURI+StorageTCPPORT+"/user/"+updatedData.Nickname+"/delete_user_data")
+	}
 	// And return positively
 	return true
 }
