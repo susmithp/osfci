@@ -347,7 +347,7 @@ func deleteUser(username string, w http.ResponseWriter, r *http.Request) bool {
 	// Just need to disable the account by unactivating it
 	// It could be recovered by resetting the password
 	updatedData.Active = 0
-	c, _ := json.Marshal(updatedData)
+	//c, _ := json.Marshal(updatedData)
 	//base.HTTPPutRequest("http://"+StorageURI+StorageTCPPORT+"/user/"+updatedData.Nickname, c, "application/json")
 	base.HTTPDeleteRequest("http://"+StorageURI+StorageTCPPORT+"/user/"+updatedData.Nickname)
 	if newData.DeleteData == "true" {
