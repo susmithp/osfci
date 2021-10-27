@@ -187,7 +187,7 @@ func deleteUserData(username string, content string) int {
 	file_pattern := storageRoot + "/" + string(username[0]) + "/*" + username + ".*"
 	matches, err := filepath.Glob(file_pattern)
 	if err != nil {
-		base.Zlog.Fatalf(err)
+		base.Zlog.Fatalf(err.Error())
 		return 1
 	}
 	base.Zlog.Infof("Total number of data files found: %d", len(matches))

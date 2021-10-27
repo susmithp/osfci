@@ -331,7 +331,7 @@ func deleteUser(username string, w http.ResponseWriter, r *http.Request) bool {
 	_ = json.Unmarshal(getJSON, &newData)
 	base.Zlog.Infof("Deleteing the user: %s", username)
 	base.Zlog.Infof(newData.CurrentPassword)
-	base.Zlog.Infof("Deleteing the user Data: %s", username.DeleteData)
+	base.Zlog.Infof("Deleteing the user Data: %s", newData.DeleteData)
 	if newData.DeleteData == "true" {
 	} else {
 	}
