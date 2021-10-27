@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"path/filepath"
 )
 
 var storageRoot string
@@ -182,7 +183,18 @@ func deleteEntry(username string, content string) int {
 }
 
 func deleteUserData(username string, content string) int {
-	base.Zlog.Infof("Delete: User data: %s", username)
+	base.Zlog.Infof("Deleting the User data of : %s", username)
+	file_pattern := storageRoot + "/" + string(username[0]) + "/*" + username + ".*"
+	matches, err := filepath.Glob(file_pattern)
+	if err != nil {
+		base.Zlog.Fatalf(err)
+		return 1
+	}
+	base.Zlog.Infof("Total number of data files found: %d", len(matches))
+	for _, file := range matches {
+		base.Zlog.Infof("Deleting the file: %s", file)
+		//_ = os.Remove(file)
+	}
 	return 1
 }
 
