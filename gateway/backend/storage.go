@@ -170,28 +170,35 @@ func deleteEntry(username string, content string) int {
 	base.Zlog.Infof("Checking if the file exists")
 	if !os.IsNotExist(err) {
 		base.Zlog.Infof("deleting user file")
-		_ = os.Remove(storageRoot + "/" + string(username[0]) + "/" + username)
+		//_ = os.Remove(storageRoot + "/" + string(username[0]) + "/" + username)
 	}
 	_, err = os.Stat(storageRoot + "/" + string(username[0]) + "/" + username + ".jpg")
 	if !os.IsNotExist(err) {
 		base.Zlog.Infof("deleting user image")
-		_ = os.Remove(storageRoot + "/" + string(username[0]) + "/" + username + ".jpg")
+		//_ = os.Remove(storageRoot + "/" + string(username[0]) + "/" + username + ".jpg")
 	}
 	return 1
 }
 
 func deleteUserData(username string, content string) int {
 	base.Zlog.Infof("Deleting the User data of : %s", username)
-	file_pattern := storageRoot + "/" + string(username[0]) + "/*" + username + ".*"
-	matches, err := filepath.Glob(file_pattern)
+	findDeleteUserData(storageRoot + "/" + string(username[0]) + "/linuxboot_*" + username + ".rom")
+	findDeleteUserData(storageRoot + "/" + string(username[0]) + "/linuxboot_*" + username + ".log")
+	findDeleteUserData(storageRoot + "/" + string(username[0]) + "/openbmc_*" + username + ".rom")
+	findDeleteUserData(storageRoot + "/" + string(username[0]) + "/openbmc_*" + username + ".log")
+	return 1
+}
+
+func findDeleteUserData(pattern string) int {
+	matches, err := filepath.Glob(pattern)
 	if err != nil {
 		base.Zlog.Fatalf(err.Error())
-		return 1
+		return 0
 	}
 	base.Zlog.Infof("Total number of data files found: %d", len(matches))
 	for _, file := range matches {
 		base.Zlog.Infof("Deleting the file: %s", file)
-		_ = os.Remove(file)
+		//_ = os.Remove(file)
 	}
 	return 1
 }
