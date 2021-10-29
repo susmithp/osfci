@@ -216,6 +216,8 @@ func userCallback(w http.ResponseWriter, r *http.Request) {
 	var recipe string
 	if len(path) > 3 {
 		command = path[3]
+	}
+	if len(path) > 4 {
 		recipe = path[4]
 	}
 	switch r.Method {
