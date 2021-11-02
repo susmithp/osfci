@@ -206,19 +206,19 @@ func userCallback(w http.ResponseWriter, r *http.Request) {
 	var filecontent string
 	var returnValue int
 	// We must breakdown the words, because username is not always the last word
-	path := strings.Split(r.URL.Path, "/")
-	if len(path) < 3 {
+	path := strings.Split(strings.TrimSpace(r.URL.Path[1:]), "/")
+	if len(path) < 2 {
 		http.Error(w, "401 Malformed URI", 401)
 		return
 	}
-	username = path[2]
+	username = path[1]
 	var command string
 	var recipe string
-	if len(path) > 3 {
-		command = path[3]
+	if len(path) > 2 {
+		command = path[2]
 	}
-	if len(path) > 4 {
-		recipe = path[4]
+	if len(path) > 3 {
+		recipe = path[3]
 	}
 	switch r.Method {
 	case http.MethodGet:
